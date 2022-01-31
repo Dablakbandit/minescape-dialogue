@@ -8414,9 +8414,8 @@ async function run() {
 
         let actions = '\n';
 
-        core.info(files);
-        core.info('Run?');
-        for ( var file in files ) {
+        for ( var file of files ) {
+            core.info(file);
             if ( !file.endsWith(".json") ) {
                 continue;
             }
