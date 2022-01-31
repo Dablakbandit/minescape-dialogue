@@ -20,6 +20,7 @@ async function run() {
         let files = JSON.parse(fs.readFileSync(homedir + '/files.json'));
 
         let actions = '';
+        let issues = '';
 
         for ( var file of files ) {
             if ( !file.endsWith(".json") ) {
@@ -29,6 +30,7 @@ async function run() {
             try{
                 let json = JSON.parse(fs.readFileSync(file));
                 for ( node of json[0].nodes ){
+                    // Actions Checks
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
                         actions += `\n${file.split("/").pop()} | _**${node.text}**_`;
                     } else if (node.node_type == 'show_message') {
@@ -40,16 +42,48 @@ async function run() {
                     } else if (node.node_type == 'condition_branch') {
                         actions += `\n${file.split("/").pop()} | _**${node.text}**_`;
                     }
+
+                    // Detect Issues
+                    if (node.node_type == 'execute' && node.title == 'EXECUTE') {
+                        if (len(node.text.replace('\n', ''))) {
+                            issues += `\n${file.split("/").pop()} | _**Empty execute ${node.title}**_`;
+                        }
+                    } else if (node.node_type == 'show_message') {
+                        for (choice of node.choices) {
+                            if (len(choice.text.ENG.replace('\n', ''))) {
+                                issues += `\n${file.split("/").pop()} | _**Empty show message ${node.title}**_`;
+                            }
+                        }
+                        if (node.speaker_type != 1) {
+                            issues += `\n${file.split("/").pop()} | _**Wrong show message dropdown type ${node.title}**_`;
+                        }
+                        if (node.object_path != 'OPTION') {
+                            issues += `\n${file.split("/").pop()} | _**Unknown show message object type ${node.title}**_`;
+                        }
+                    } else if (node.node_type == 'condition_branch') {
+                        if (len(node.text.replace('\n', ''))) {
+                            issues += `\n${file.split("/").pop()} | _**Empty condition ${node.title}**_`;
+                        }
+                    }
                 }
             } catch (error) {
                 core.setFailed(file + ": " + error.message);
             }
         }
       
+        let message = `Thank you for submitting a pull request! We will try to review this as soon as we can.`
+        if(len(actions) > 0){
+            message += `\n\nActions:${actions}`;
+        }
+
+        if(len(issues) > 0){
+            message += `\n\Issues:${issues}`;
+        }
+
         await octokit.rest.issues.createComment({
           ...context.repo,
           issue_number: pull_request.number,
-          body: `Thank you for submitting a pull request! We will try to review this as soon as we can.\n\nActions:${actions}`
+          body: message
         });
 
     } catch (error) {
