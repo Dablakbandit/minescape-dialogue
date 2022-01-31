@@ -15,5 +15,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           json_schema: ./.schemas/validate.schema
           json_path_pattern: .*.json$
-          send_comment: true
-          clear_comments: true
