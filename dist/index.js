@@ -8393,7 +8393,7 @@ exports.withCustomRequest = withCustomRequest;
 
 const core = __webpack_require__(470);
 const github = __webpack_require__(469);
-const os = __webpack_require__(87);
+const fs = __webpack_require__(747);
 
 async function run() {
     try {
@@ -8414,6 +8414,9 @@ async function run() {
         let actions = '\n';
 
         for ( var file in files ) {
+            if ( !file.endsWith(".json") ) {
+                continue;
+            }
             try{
                 let json = JSON.parse(fs.readFileSync(file));
                 for ( node in json.nodes ){
