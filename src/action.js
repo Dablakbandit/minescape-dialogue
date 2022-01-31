@@ -27,7 +27,9 @@ async function run() {
             }
             try{
                 let json = JSON.parse(fs.readFileSync(file));
+                console.log(json);
                 for ( node in json[0].nodes ){
+                    console.log(node);
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
                         actions += node.text;
                     }
