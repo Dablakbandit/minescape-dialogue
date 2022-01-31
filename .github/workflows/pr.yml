@@ -1,0 +1,28 @@
+name: PR
+
+on:
+ pull_request:
+    branches: [ master ]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    name: Test changed-files
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v14.1
+
+      - name: List all changed files
+        run: |
+          mkdir modified
+          for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
+            echo $file >> modified/files.txt 
+          done
+      - name: Check file action
+        uses: ./
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

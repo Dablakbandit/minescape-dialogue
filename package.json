@@ -1,0 +1,19 @@
+{
+  "name": "minescape-dialogue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dablakbandit/minescape-dialogue.git"
+  },
+  "author": "Ashley Thew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dablakbandit/minescape-dialogue/issues"
+  },
+  "homepage": "https://github.com/Dablakbandit/minescape-dialogue#readme"
+}
