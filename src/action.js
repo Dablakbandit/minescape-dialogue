@@ -21,6 +21,9 @@ async function run() {
         let actions = '\n';
 
         for ( var file in files ) {
+            if ( !file.endsWith(".json") ) {
+                continue;
+            }
             try{
                 let json = JSON.parse(fs.readFileSync(file));
                 for ( node in json.nodes ){
