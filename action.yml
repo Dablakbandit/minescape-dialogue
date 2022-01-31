@@ -1,5 +1,5 @@
-name: "Check file action"
-description: ""
+name: "Dialogue Checks"
+description: "Check dialogues for issues"
 author: 'Ashley Thew'
 
 inputs:

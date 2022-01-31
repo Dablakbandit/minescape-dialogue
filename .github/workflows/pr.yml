@@ -1,4 +1,4 @@
-name: PR
+name: Dialogue Checks
 
 on:
  pull_request:
@@ -7,16 +7,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Test changed-files
+    name: Dialogue Checks
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - id: file_changes
         uses: trilom/file-changes-action@v1.2.3
-      - name: test
+      - name: Changed Files
         run: cat $HOME/files.json
-      - name: Check file action
+      - name: Run Custom Action
         uses: ./
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

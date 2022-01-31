@@ -1,7 +1,7 @@
 {
-  "name": "minescape-dialogue",
+  "name": "minescape-dialogue-checkers",
   "version": "1.0.0",
-  "description": "",
+  "description": "Dialogue Checks",
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build src/action.js -o dist"

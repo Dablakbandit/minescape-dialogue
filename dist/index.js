@@ -8393,6 +8393,7 @@ exports.withCustomRequest = withCustomRequest;
 
 const core = __webpack_require__(470);
 const github = __webpack_require__(469);
+const os = __webpack_require__(87);
 
 async function run() {
     try {
@@ -8406,11 +8407,29 @@ async function run() {
             core.setFailed('No pull request found.');
             return;
         }
+
+        let homedir = os.homedir();
+        let files = JSON.parse(fs.readFileSync(homedir + '/files.json'));
+
+        let actions = '\n';
+
+        for ( var file in files ) {
+            try{
+                let json = JSON.parse(fs.readFileSync(file));
+                for ( node in json.nodes ){
+                    if (node.node_type == 'execute' && node.title == 'EXECUTE') {
+                        actions += node.text;
+                    }
+                }
+            } catch (error) {
+                core.setFailed(file + ": " + error.message);
+            }
+        }
       
         await octokit.rest.issues.createComment({
           ...context.repo,
           issue_number: pull_request.number,
-          body: `Thank you for submitting a pull request! We will try to review this as soon as we can./>`
+          body: `Thank you for submitting a pull request! We will try to review this as soon as we can.\n\nActions:${actions}`
         });
 
     } catch (error) {
