@@ -21,6 +21,8 @@ async function run() {
 
         let actions = '\n';
 
+        core.info(files);
+        core.info('Run?');
         for ( var file in files ) {
             if ( !file.endsWith(".json") ) {
                 continue;
