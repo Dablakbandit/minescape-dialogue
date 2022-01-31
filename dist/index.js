@@ -8470,7 +8470,7 @@ async function run() {
         }
 
         if(issues.length > 0){
-            message += `\n\Issues:${issues}`;
+            message += `\n\nIssues:${issues}`;
         }
 
         await octokit.rest.issues.createComment({
