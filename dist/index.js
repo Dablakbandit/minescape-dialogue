@@ -8412,20 +8412,20 @@ async function run() {
         let homedir = os.homedir();
         let files = JSON.parse(fs.readFileSync(homedir + '/files.json'));
 
-        let actions = '\n';
+        let actions = '';
 
         for ( var file of files ) {
-            core.info(file);
             if ( !file.endsWith(".json") ) {
                 continue;
             }
+            core.info(`Checking ${file}`);
             try{
                 let json = JSON.parse(fs.readFileSync(file));
-                core.info(json);
-                for ( node in json[0].nodes ){
-                    core.info(node);
+                core.info(JSON.stringify(node));
+                for ( node of json[0].nodes ){
+                    core.info(JSON.stringify(node));
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
-                        actions += node.text;
+                        actions += `\n${node.text}`;
                     }
                 }
             } catch (error) {
