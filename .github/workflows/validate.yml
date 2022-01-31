@@ -1,0 +1,19 @@
+name: Pull request workflow
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  validate_jsons:
+    name: Validate jsons
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Validate json
+        uses: snapcart/json-schema-validator@v1.0.0
+        with:
+          token: ${{ secrets.RESOURCEPACK_SECRET }}
+          json_schema: ./.schemas/validate.schema
+          json_path_pattern: .*.json$
+          send_comment: true
+          clear_comments: true

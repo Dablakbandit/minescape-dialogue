@@ -2,18 +2,25 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 async function run() {
-    const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
-    
-    const octokit = github.getOctokit(GITHUB_TOKEN);
+    try {
+        const github_token = core.getInput('GITHUB_TOKEN');
 
-    const { context = {} } = github;
-    const { pull_request } = context.payload;
+        const context = github.context;
+        if (context.payload.pull_request == null) {
+            core.setFailed('No pull request found.');
+            return;
+        }
 
-    await octokit.issues.createComment({
-        ...context.repo,
-        issue_number: pull_request.number,
-        body: 'Thank you for submitting a pull request! We will try to review this as soon as we can.'
-    });
+        const octokit = new github.GitHub(github_token);
+        await octokit.issues.createComment({
+            ...context.repo,
+            issue_number: context.payload.pull_request.number,
+            body: 'Thank you for submitting a pull request! We will try to review this as soon as we can.'
+        });
+
+    } catch (error) {
+        core.setFailed(error.message);
+    }
 }
 
 run();
