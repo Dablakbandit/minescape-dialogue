@@ -45,12 +45,12 @@ async function run() {
 
                     // Detect Issues
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
-                        if (len(node.text.replace('\n', ''))) {
+                        if (node.text.replace('\n', '').length == 0) {
                             issues += `\n${file.split("/").pop()} | _**Empty execute ${node.title}**_`;
                         }
                     } else if (node.node_type == 'show_message') {
                         for (choice of node.choices) {
-                            if (len(choice.text.ENG.replace('\n', ''))) {
+                            if (choice.text.ENG.replace('\n', '').length == 0) {
                                 issues += `\n${file.split("/").pop()} | _**Empty show message ${node.title}**_`;
                             }
                         }
@@ -61,7 +61,7 @@ async function run() {
                             issues += `\n${file.split("/").pop()} | _**Unknown show message object type ${node.title}**_`;
                         }
                     } else if (node.node_type == 'condition_branch') {
-                        if (len(node.text.replace('\n', ''))) {
+                        if (node.text.replace('\n', '').length == 0) {
                             issues += `\n${file.split("/").pop()} | _**Empty condition ${node.title}**_`;
                         }
                     }
