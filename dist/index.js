@@ -8423,15 +8423,15 @@ async function run() {
                 let json = JSON.parse(fs.readFileSync(file));
                 for ( node of json[0].nodes ){
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
-                        actions += `\n${node.text}`;
+                        actions += `\n${file.split("\\").pop()} ${node.text}`;
                     } else if (node.node_type == 'show_message') {
                         for (choice of node.choices) {
                             if (choice.condition != '') {
-                                actions += `\n${choice.condition}`;
+                                actions += `\n${file.split("\\").pop()} ${choice.condition}`;
                             }
                         }
                     } else if (node.node_type == 'condition_branch') {
-                        actions += `\n${node.text}`;
+                        actions += `\n${file.split("\\").pop()} ${node.text}`;
                     }
                 }
             } catch (error) {
