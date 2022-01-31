@@ -8473,6 +8473,13 @@ async function run() {
             message += `\n\nIssues:${issues}`;
         }
 
+        await octokit.rest.issues.listComments({
+            ...context.repo,
+            issue_number: pull_request.number,
+        }).then((comments) => {
+            core.info(comments);
+        });
+
         await octokit.rest.issues.createComment({
           ...context.repo,
           issue_number: pull_request.number,
