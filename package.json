@@ -2,9 +2,8 @@
   "name": "minescape-dialogue",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -15,5 +14,9 @@
   "bugs": {
     "url": "https://github.com/Dablakbandit/minescape-dialogue/issues"
   },
-  "homepage": "https://github.com/Dablakbandit/minescape-dialogue#readme"
+  "homepage": "https://github.com/Dablakbandit/minescape-dialogue#readme",
+  "devDependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0"
+  }
 }
