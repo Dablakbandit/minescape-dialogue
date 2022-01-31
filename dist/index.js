@@ -8421,7 +8421,7 @@ async function run() {
             core.info(`Checking ${file}`);
             try{
                 let json = JSON.parse(fs.readFileSync(file));
-                core.info(JSON.stringify(node));
+                core.info(JSON.stringify(json));
                 for ( node of json[0].nodes ){
                     core.info(JSON.stringify(node));
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
