@@ -8412,17 +8412,18 @@ async function run() {
         let homedir = os.homedir();
         let files = JSON.parse(fs.readFileSync(homedir + '/files.json'));
 
-        let actions = '\n';
+        let actions = '';
 
-        for ( var file in files ) {
+        for ( var file of files ) {
             if ( !file.endsWith(".json") ) {
                 continue;
             }
+            core.info(`Checking ${file}`);
             try{
                 let json = JSON.parse(fs.readFileSync(file));
-                for ( node in json.nodes ){
+                for ( node of json[0].nodes ){
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
-                        actions += node.text;
+                        actions += `\n${node.text}`;
                     }
                 }
             } catch (error) {
