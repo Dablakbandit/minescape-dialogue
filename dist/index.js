@@ -8396,19 +8396,21 @@ const github = __webpack_require__(469);
 
 async function run() {
     try {
-        const github_token = core.getInput('GITHUB_TOKEN');
+        const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
+        const octokit = github.getOctokit(GITHUB_TOKEN);
 
-        const context = github.context;
-        if (context.payload.pull_request == null) {
+        const { context = {} } = github;
+        const { pull_request } = context.payload;
+
+        if (pull_request == null) {
             core.setFailed('No pull request found.');
             return;
         }
-
-        const octokit = new github.GitHub(github_token);
+      
         await octokit.issues.createComment({
-            ...context.repo,
-            issue_number: context.payload.pull_request.number,
-            body: 'Thank you for submitting a pull request! We will try to review this as soon as we can.'
+          ...context.repo,
+          issue_number: pull_request.number,
+          body: `Thank you for submitting a pull request! We will try to review this as soon as we can.\n\n<img src="${gifUrl}" alt="thank you" />`
         });
 
     } catch (error) {
