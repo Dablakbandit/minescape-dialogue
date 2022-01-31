@@ -8476,8 +8476,17 @@ async function run() {
         await octokit.rest.issues.listComments({
             ...context.repo,
             issue_number: pull_request.number,
-        }).then((comments) => {
+        }).then(async (comments) => {
             core.info(JSON.stringify(comments));
+            for (var comment of comments.data) {
+                if ( comment.user.login == 'github-actions[bot]') {
+                    await octokit.rest.issues.deleteComment({
+                        ...context.repo,
+                        issue_number: pull_request.number,
+                        comment_id: comment.id
+                    });
+                }
+            }
         });
 
         await octokit.rest.issues.createComment({
