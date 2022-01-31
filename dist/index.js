@@ -8465,11 +8465,11 @@ async function run() {
         }
       
         let message = `Thank you for submitting a pull request! We will try to review this as soon as we can.`
-        if(len(actions) > 0){
+        if(actions.length > 0){
             message += `\n\nActions:${actions}`;
         }
 
-        if(len(issues) > 0){
+        if(issues.length > 0){
             message += `\n\Issues:${issues}`;
         }
 
