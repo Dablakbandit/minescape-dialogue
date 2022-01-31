@@ -29,7 +29,7 @@ async function run() {
             core.info(`Checking ${file}`);
             try{
                 let json = JSON.parse(fs.readFileSync(file));
-                if (json.nodes === undefined) {
+                if(json[0] === undefined || json[0].nodes == undefined) {
                     continue;
                 }
                 for ( node of json[0].nodes ){
