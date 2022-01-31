@@ -8422,6 +8422,9 @@ async function run() {
             core.info(`Checking ${file}`);
             try{
                 let json = JSON.parse(fs.readFileSync(file));
+                if (json.nodes === undefined) {
+                    continue;
+                }
                 for ( node of json[0].nodes ){
                     // Actions Checks
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
