@@ -8420,7 +8420,9 @@ async function run() {
             }
             try{
                 let json = JSON.parse(fs.readFileSync(file));
+                core.info(json);
                 for ( node in json[0].nodes ){
+                    core.info(node);
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
                         actions += node.text;
                     }
