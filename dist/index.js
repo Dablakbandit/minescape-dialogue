@@ -8393,6 +8393,7 @@ exports.withCustomRequest = withCustomRequest;
 
 const core = __webpack_require__(470);
 const github = __webpack_require__(469);
+const os = __webpack_require__(87);
 const fs = __webpack_require__(747);
 
 async function run() {
