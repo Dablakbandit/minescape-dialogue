@@ -8477,7 +8477,7 @@ async function run() {
             ...context.repo,
             issue_number: pull_request.number,
         }).then((comments) => {
-            core.info(comments);
+            core.info(JSON.stringify(comments));
         });
 
         await octokit.rest.issues.createComment({
