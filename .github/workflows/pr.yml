@@ -22,6 +22,7 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_modified_files }}; do
             echo $file >> modified/files.txt 
           done
+          cat modified/files.txt
       - name: Check file action
         uses: ./
         with:
