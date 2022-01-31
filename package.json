@@ -1,0 +1,24 @@
+{
+  "name": "minescape-dialogue-checkers",
+  "version": "1.0.0",
+  "description": "Dialogue Checks",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build src/action.js -o dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dablakbandit/minescape-dialogue.git"
+  },
+  "author": "Ashley Thew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dablakbandit/minescape-dialogue/issues"
+  },
+  "homepage": "https://github.com/Dablakbandit/minescape-dialogue#readme",
+  "devDependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0",
+    "@zeit/ncc": "^0.22.3"
+  }
+}
