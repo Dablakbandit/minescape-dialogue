@@ -8412,17 +8412,54 @@ async function run() {
         let homedir = os.homedir();
         let files = JSON.parse(fs.readFileSync(homedir + '/files.json'));
 
-        let actions = '\n';
+        let actions = '';
+        let issues = '';
 
-        for ( var file in files ) {
+        for ( var file of files ) {
             if ( !file.endsWith(".json") ) {
                 continue;
             }
+            core.info(`Checking ${file}`);
             try{
                 let json = JSON.parse(fs.readFileSync(file));
-                for ( node in json.nodes ){
+                if(json[0] === undefined || json[0].nodes == undefined) {
+                    continue;
+                }
+                for ( node of json[0].nodes ){
+                    // Actions Checks
                     if (node.node_type == 'execute' && node.title == 'EXECUTE') {
-                        actions += node.text;
+                        actions += `\n${file.split("/").pop()} | _**${node.text}**_`;
+                    } else if (node.node_type == 'show_message') {
+                        for (choice of node.choices) {
+                            if (choice.condition != '') {
+                                actions += `\n${file.split("/").pop()} | _**${choice.condition}**_`;
+                            }
+                        }
+                    } else if (node.node_type == 'condition_branch') {
+                        actions += `\n${file.split("/").pop()} | _**${node.text}**_`;
+                    }
+
+                    // Detect Issues
+                    if (node.node_type == 'execute' && node.title == 'EXECUTE') {
+                        if (node.text.replace('\n', '').length == 0) {
+                            issues += `\n${file.split("/").pop()} | _**Empty execute ${node.title}**_`;
+                        }
+                    } else if (node.node_type == 'show_message') {
+                        for (choice of node.choices) {
+                            if (choice.text.ENG.replace('\n', '').length == 0) {
+                                issues += `\n${file.split("/").pop()} | _**Empty show message ${node.title}**_`;
+                            }
+                        }
+                        if (node.speaker_type != 1) {
+                            issues += `\n${file.split("/").pop()} | _**Wrong show message dropdown type ${node.title}**_`;
+                        }
+                        if (node.object_path != 'OPTION') {
+                            issues += `\n${file.split("/").pop()} | _**Unknown show message object type ${node.title}**_`;
+                        }
+                    } else if (node.node_type == 'condition_branch') {
+                        if (node.text.replace('\n', '').length == 0) {
+                            issues += `\n${file.split("/").pop()} | _**Empty condition ${node.title}**_`;
+                        }
                     }
                 }
             } catch (error) {
@@ -8430,10 +8467,35 @@ async function run() {
             }
         }
       
+        let message = `Thank you for submitting a pull request! We will try to review this as soon as we can.`
+        if(actions.length > 0){
+            message += `\n\nActions:${actions}`;
+        }
+
+        if(issues.length > 0){
+            message += `\n\nIssues:${issues}`;
+        }
+
+        await octokit.rest.issues.listComments({
+            ...context.repo,
+            issue_number: pull_request.number,
+        }).then(async (comments) => {
+            core.info(JSON.stringify(comments));
+            for (var comment of comments.data) {
+                if ( comment.user.login == 'github-actions[bot]') {
+                    await octokit.rest.issues.deleteComment({
+                        ...context.repo,
+                        issue_number: pull_request.number,
+                        comment_id: comment.id
+                    });
+                }
+            }
+        });
+
         await octokit.rest.issues.createComment({
           ...context.repo,
           issue_number: pull_request.number,
-          body: `Thank you for submitting a pull request! We will try to review this as soon as we can.\n\nActions:${actions}`
+          body: message
         });
 
     } catch (error) {
