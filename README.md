@@ -15,6 +15,9 @@ GitHub Desktop & Github Account:
 [https://desktop.github.com/](https://desktop.github.com/)
 [https://github.com/join](https://github.com/join)
 
+Runelite Wiki Dialogue (Useful for copying text):
+[https://github.com/AshleyThew/wiki-dialogue](https://github.com/AshleyThew/wiki-dialogue)
+
 1. From [https://github.com/Dablakbandit/minescape-dialogue](https://github.com/Dablakbandit/minescape-dialogue) click the green 'Code' button.
 2. Click 'Open with GitHub Desktop' and accept the popup if it appears.
 3. Select a folder to clone the repository to ie (C:\Users\You\Documents\minescape-dialogue)
